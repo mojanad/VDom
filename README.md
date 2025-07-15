@@ -12,6 +12,8 @@ This project provides a visual, step-by-step demonstration of React's internal r
 - The difference between Render and Commit phases
 - When and how React updates the actual DOM
 - The timing of hooks like `useState`, `useEffect`, and `useLayoutEffect`
+- **React Fiber architecture and its role in modern React**
+- **How Fiber enables concurrent features and priority scheduling**
 
 ## ✨ **Features**
 
@@ -32,6 +34,9 @@ This project provides a visual, step-by-step demonstration of React's internal r
 - **Code examples** showing render vs commit phase operations
 - **Hook timing information** (useState, useEffect, useLayoutEffect)
 - **Phase comparison** between Render and Commit phases
+- **Deep dive into React Fiber architecture** and its benefits
+- **Priority system explanation** with real-world examples
+- **Concurrent features overview** (Suspense, startTransition, etc.)
 
 ### 🎨 **Modern UI/UX**
 - **Clean, professional design** with consistent color palette
