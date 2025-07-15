@@ -64,6 +64,13 @@ const VirtualDOMDemo = () => {
         setPendingItems(null);
       }
       if (next > MAX_STEP) {
+        // Update diff to show final state before resetting
+        const finalItems = pendingItems || items;
+        setDiff({
+          prev: finalItems,
+          next: finalItems,
+          changedIds: [],
+        });
         resetProcess();
         return 0;
       }
@@ -295,6 +302,7 @@ const fiberNode = {
     highlight = [],
     prev = [],
     next = [],
+    step = 0,
   }) => (
     <div
       className={`p-4 border-2 rounded-xl shadow-lg bg-white ${
@@ -308,33 +316,42 @@ const fiberNode = {
       </h3>
       <div className="bg-slate-50 p-3 rounded-lg font-mono text-sm border border-slate-200 max-h-48 overflow-y-auto">
         <div className="text-slate-500 font-semibold">{"items: ["}</div>
-        {items.map((item) => {
-          let icon = "";
-          let color = "";
-          if (highlight.includes(item.id)) {
+        {items
+          .filter((item) => {
+            // Only show new items if step >= 2
             const type = getItemChangeType(item.id, prev, next);
             if (type === "added") {
-              icon = "🟢";
-              color =
-                "bg-emerald-100 border border-emerald-300 text-emerald-800";
-            } else if (type === "removed") {
-              icon = "🔴";
-              color = "bg-red-100 border border-red-300 text-red-800";
-            } else if (type === "changed") {
-              icon = "🟡";
-              color = "bg-amber-100 border border-amber-300 text-amber-800";
+              return step >= 2;
             }
-          }
-          return (
-            <div
-              key={item.id}
-              className={`ml-4 flex items-center gap-2 rounded-lg px-3 py-1 my-1 transition-all ${color}`}
-            >
-              {icon && <span className="text-lg">{icon}</span>}
-              <span className="text-slate-700 text-xs">{`{ id: ${item.id}, name: "${item.name}", selected: ${item.selected} }`}</span>
-            </div>
-          );
-        })}
+            return true; // Show existing items always
+          })
+          .map((item) => {
+            let icon = "";
+            let color = "";
+            if (highlight.includes(item.id)) {
+              const type = getItemChangeType(item.id, prev, next);
+              if (type === "added") {
+                icon = "🟢";
+                color =
+                  "bg-emerald-100 border border-emerald-300 text-emerald-800";
+              } else if (type === "removed") {
+                icon = "🔴";
+                color = "bg-red-100 border border-red-300 text-red-800";
+              } else if (type === "changed") {
+                icon = "🟡";
+                color = "bg-amber-100 border border-amber-300 text-amber-800";
+              }
+            }
+            return (
+              <div
+                key={item.id}
+                className={`ml-4 flex items-center gap-2 rounded-lg px-3 py-1 my-1 transition-all ${color}`}
+              >
+                {icon && <span className="text-lg">{icon}</span>}
+                <span className="text-slate-700 text-xs">{`{ id: ${item.id}, name: "${item.name}", selected: ${item.selected} }`}</span>
+              </div>
+            );
+          })}
         <div className="text-slate-500 font-semibold">{"]"}</div>
       </div>
     </div>
@@ -353,6 +370,7 @@ const fiberNode = {
     highlight: PropTypes.arrayOf(PropTypes.number),
     prev: PropTypes.array,
     next: PropTypes.array,
+    step: PropTypes.number,
   };
 
   return (
@@ -601,6 +619,7 @@ const fiberNode = {
                   )}
                   prev={diff.prev}
                   next={diff.next}
+                  step={step}
                 />
                 <VirtualTree
                   title="New Virtual DOM"
@@ -611,6 +630,7 @@ const fiberNode = {
                   )}
                   prev={diff.prev}
                   next={diff.next}
+                  step={step}
                 />
               </div>
 
