@@ -362,7 +362,7 @@ const fiberNode = {
       {/* Header */}
       <div className="w-full max-w-7xl mx-auto px-4 mb-6">
         <h1 className="text-4xl font-extrabold mb-2 text-slate-800 tracking-tight text-center flex items-center justify-center gap-3">
-          ⚛️ React Fiber & Virtual DOM
+          ⚛️ React Virtual DOM
         </h1>
         <p className="text-slate-600 mb-6 text-center text-lg">
           Interactive visualization of React&apos;s rendering process
@@ -475,24 +475,32 @@ const fiberNode = {
                     item.selected
                       ? "bg-emerald-50 border-emerald-300 text-emerald-800"
                       : "bg-blue-50 border-blue-200 text-slate-700"
-                  } ${
-                    renderPhase ? "opacity-75" : "opacity-100"
-                  }`}
+                  } ${renderPhase ? "opacity-75" : "opacity-100"}`}
                 >
                   {item.name}
                 </div>
               ))}
               {/* Show pending changes during render phase */}
-              {renderPhase && pendingItems && pendingItems.length > items.length && (
-                <div className="p-3 rounded-lg border-2 border-dashed border-amber-400 font-medium text-center text-sm bg-amber-50 text-amber-700 opacity-60">
-                  {pendingItems[pendingItems.length - 1].name} (Pending)
-                </div>
-              )}
-              {renderPhase && pendingItems && pendingItems.length < items.length && (
-                <div className="p-3 rounded-lg border-2 border-dashed border-red-400 font-medium text-center text-sm bg-red-50 text-red-700 opacity-60">
-                  Removing: {items.find(item => !pendingItems.some(p => p.id === item.id))?.name} (Pending)
-                </div>
-              )}
+              {renderPhase &&
+                pendingItems &&
+                pendingItems.length > items.length && (
+                  <div className="p-3 rounded-lg border-2 border-dashed border-amber-400 font-medium text-center text-sm bg-amber-50 text-amber-700 opacity-60">
+                    {pendingItems[pendingItems.length - 1].name} (Pending)
+                  </div>
+                )}
+              {renderPhase &&
+                pendingItems &&
+                pendingItems.length < items.length && (
+                  <div className="p-3 rounded-lg border-2 border-dashed border-red-400 font-medium text-center text-sm bg-red-50 text-red-700 opacity-60">
+                    Removing:{" "}
+                    {
+                      items.find(
+                        (item) => !pendingItems.some((p) => p.id === item.id)
+                      )?.name
+                    }{" "}
+                    (Pending)
+                  </div>
+                )}
             </div>
           </div>
 
