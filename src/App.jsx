@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 const VirtualDOMDemo = () => {
   const [items, setItems] = useState([
     { id: 1, name: "Apple", selected: false },
-    { id: 2, name: "Banana", selected: false },
-    { id: 3, name: "Cherry", selected: false },
   ]);
   const [pendingItems, setPendingItems] = useState(null);
   const [showDiff, setShowDiff] = useState(true); // Show by default
